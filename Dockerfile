@@ -13,11 +13,6 @@ VOLUME /var/lib/eg
 
 RUN yarn global add express-gateway@$EG_VERSION
 
-COPY ./docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
-
-RUN chmod +x docker-entrypoint.sh
-
 COPY ./bin/generators/gateway/templates/basic/config /var/lib/eg
 COPY ./lib/config/models /var/lib/eg/models
 
