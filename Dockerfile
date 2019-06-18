@@ -18,4 +18,6 @@ COPY ./lib/config/models /var/lib/eg/models
 
 EXPOSE 8080 9876
 
+CMD ["node", "-e", "require('express-gateway')().run();"]
+
 CMD ["express_gateway"]
