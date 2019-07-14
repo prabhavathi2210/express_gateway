@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-LABEL Fidor Solutions
+LABEL maintainer Vincenzo Chianese, vincenzo@express-gateway.io
 
 ARG EG_VERSION
 ENV NODE_ENV production
@@ -19,5 +19,3 @@ COPY ./lib/config/models /var/lib/eg/models
 EXPOSE 8080 9876
 
 CMD ["node", "-e", "require('express-gateway')().run();"]
-
-CMD ["express_gateway"]
