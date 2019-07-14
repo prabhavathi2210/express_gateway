@@ -11,7 +11,7 @@ apiEndpoints:
     host: '*'
 serviceEndpoints:
   backend:
-    url: 'http://localhost:3000' # btw this is EG admin API
+    url: 'http://localhost:9876' # btw this is EG admin API
 policies:
   - proxy
   - key-auth
