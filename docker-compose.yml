@@ -11,7 +11,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=dummy
       - MYSQL_ROOT_USERANME=root
-      - MYSQL_DATABASE=express_gateway_production
+      - MYSQL_DATABASE=express_gateway_local
     ports:
       - "3307:3306"
     networks:
