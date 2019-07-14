@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json /usr/src/app/
 RUN npm install
 
-EXPOSE 8080 9876
+EXPOSE 9080 9876
 
 CMD [ "node", "lib", "index.js" ]
 
