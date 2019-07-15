@@ -18,7 +18,7 @@ COPY ./lib/config/models /var/lib/eg/models
 WORKDIR /usr/src/app
 
 COPY package.json package-lock.json /usr/src/app/
-COPY 
+
 RUN npm install
 
 EXPOSE 8080 9876
