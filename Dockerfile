@@ -7,11 +7,12 @@ ENV CHOKIDAR_USEPOLLING true
 
 ENV EG_CONFIG_DIR /usr/src/app/lib/config
 
-WORKDIR /usr/src/app
-
 COPY ./docker-entrypoint.sh /usr/src/app/
 
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
+
+WORKDIR /usr/src/app
+
 
 ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
 
