@@ -8,7 +8,9 @@ ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules/
 
 ENV CHOKIDAR_USEPOLLING true
 
-RUN MKDIR /var/lib/eg
+RUN npm install mkdirp
+
+RUN MKDIR -p /var/lib/eg
 
 ENV EG_CONFIG_DIR /var/lib/eg
 
