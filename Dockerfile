@@ -18,7 +18,7 @@ COPY ./docker-entrypoint.sh /usr/src/app/
 
 RUN npm install
 
-RUN chmod +x docker-entrypoint.sh
+RUN chmod +x /usr/src/app/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8080 9876
