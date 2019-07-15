@@ -11,8 +11,9 @@ COPY ./docker-entrypoint.sh /usr/src/app/
 
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
 
-WORKDIR /usr/src/app
 
+
+RUN chmod +x /usr/src/app/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
 
@@ -23,7 +24,7 @@ EXPOSE 8080 9876
 
 CMD [ "node", "lib", "index.js" ]
 
-COPY . /usr/src/app
+
 
 
 
