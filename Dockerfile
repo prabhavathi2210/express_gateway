@@ -16,7 +16,7 @@ COPY ./docker-entrypoint.sh /usr/src/app/
 
 WORKDIR /usr/src/app
 
-RUN sudo chmod +x /usr/src/app/docker-entrypoint.sh
+RUN chmod +x /usr/src/app/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
 
