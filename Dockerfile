@@ -12,7 +12,9 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json /usr/src/app/
 RUN npm install
 
+
 COPY docker-entrypoint.sh /usr/src/app/
+RUN chmod 755 docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8080 9876
