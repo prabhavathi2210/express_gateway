@@ -4,23 +4,22 @@ ENV NODE_ENV production
 
 ENV CHOKIDAR_USEPOLLING true
 
-ENV EG_CONFIG_DIR /usr/src/app/lib/config
+ENV EG_CONFIG_DIR /var/lib/eg
 
 
 COPY package.json package-lock.json /usr/src/app/
 
+
 COPY ./docker-entrypoint.sh /usr/src/app/
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
-RUN chmod +x /usr/src/app/docker-entrypoint.sh
+RUN chmod +x docker-entrypoint.sh
 
-COPY . /usr/src/app
+
+
 
 WORKDIR /usr/src/app
 
-COPY ./lib/config/models /var/lib/eg/models
-
-
-ENTRYPOINT ["docker-entrypoint.sh"]
 
 RUN npm install 
 
