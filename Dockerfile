@@ -23,7 +23,7 @@ COPY ./lib/config/models /var/lib/eg/models
 
 EXPOSE 8080 9876
 
-CMD ["node", "lib", "index.js"]
+CMD ["node", "/var/lib", "index.js"]
 
 
 
