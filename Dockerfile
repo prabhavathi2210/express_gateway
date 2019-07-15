@@ -4,7 +4,7 @@ ENV NODE_ENV production
 
 ENV CHOKIDAR_USEPOLLING true
 
-ENV EG_CONFIG_DIR /var/lib/eg
+ENV EG_CONFIG_DIR /usr/src/app/lib/config
 
 
 COPY package.json package-lock.json /usr/src/app/
