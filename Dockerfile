@@ -9,12 +9,13 @@ ENV EG_CONFIG_DIR /var/lib/eg
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json /usr/src/app/
+COPY package.json package-lock.json .
 RUN npm install
 
 
-COPY docker-entrypoint.sh /usr/src/app/
-RUN chmod 755 docker-entrypoint.sh
+COPY ./docker-entrypoint.sh .
+
+RUN chmod +x docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8080 9876
