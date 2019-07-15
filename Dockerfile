@@ -8,7 +8,7 @@ ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules/
 
 RUN npm install mkdirp --local
 
-RUN -p mkdir /var/lib/eg
+RUN mkdir -p /var/lib/eg
 
 ENV EG_CONFIG_DIR /var/lib/eg
 # Enable chokidar polling so hot-reload mechanism can work on docker or network volumes
