@@ -7,17 +7,21 @@ ENV CHOKIDAR_USEPOLLING true
 
 ENV EG_CONFIG_DIR /usr/src/app/lib/config
 
+
+
+COPY package.json package-lock.json /usr/src/app/
+
+RUN chmod +x docker-entrypoint.sh
+
 COPY ./docker-entrypoint.sh /usr/src/app/
 
-RUN chmod +x /usr/src/app/docker-entrypoint.sh
-
-
+WORKDIR /usr/src/app
 
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
 
-COPY package.json package-lock.json /usr/src/app/
+
 RUN npm install
 
 EXPOSE 8080 9876
