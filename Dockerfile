@@ -14,7 +14,10 @@ COPY package.json package-lock.json /usr/src/app/
 
 COPY ./docker-entrypoint.sh /usr/src/app/
 
+COPY . /usr/src/app
+
 WORKDIR /usr/src/app
+
 
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
 
