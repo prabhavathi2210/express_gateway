@@ -11,7 +11,7 @@ ENV EG_CONFIG_DIR /usr/src/app/lib/config
 
 COPY package.json package-lock.json /usr/src/app/
 
-RUN chmod +x docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
 
 COPY ./docker-entrypoint.sh /usr/src/app/
 
