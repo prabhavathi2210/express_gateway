@@ -1,21 +1,32 @@
-FROM node:10-alpine
-
-LABEL maintainer Vincenzo Chianese, vincenzo@express-gateway.io
-
-ARG EG_VERSION=1.16.7
-
-RUN yarn global add express-gateway@$EG_VERSION && yarn cache clean
+FROM node:8-alpine
 
 ENV NODE_ENV production
-ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules/
-ENV EG_CONFIG_DIR /var/lib/eg
 
+# Enable chokidar polling so hot-reload mechanism can work on docker or network volumes
 ENV CHOKIDAR_USEPOLLING true
 
-VOLUME /var/lib/eg
+ENV EG_CONFIG_DIR /usr/src/app/lib/config
+
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json /usr/src/app/
+RUN npm install
+
+COPY docker-entrypoint.sh /usr/src/app/
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8080 9876
 
-COPY docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["node", "-e", "require('express-gateway')().run();"]
+CMD [ "node", "lib", "index.js" ]
+
+COPY . /usr/src/app
+
+
+
+
+
+
+
+
+
+
