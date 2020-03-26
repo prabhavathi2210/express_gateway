@@ -22,7 +22,7 @@ pipeline {
             checkout scm: [$class: 'GitSCM', branches: [[name: '${BRANCH}']], userRemoteConfigs: [[credentialsId: '68795a3a-52da-4d31-a0b5-84639e760a63', url: 'git@github.com:${FORK}/${SERVICE}.git']]]
         }
     }
-        /* Package the gems * /
+        /* Package the gems */
         stage('Package the gems') {
             steps {
                 sh '''#!/bin/bash -le
