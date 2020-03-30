@@ -3,12 +3,16 @@ def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'warning', 
 pipeline {
     agent { label 'master' }
     parameters {
-        string(name: 'Mergedbool', defaultValue: 'true', description: 'Set this to true if this is a manual build' )
         string(name: 'FORK',      defaultValue: 'Fidor-FZCO', description: "Fork  of the git repository")
         string(name: 'BRANCH',   defaultValue: 'develop', description: "Branch to build")
-        string(name: 'REGISTRY', defaultValue: 'dockerhub.fidorfzco.com:5000',     description: 'Namespace for the Docker Image')
         string(name: 'NAMESPACE',   defaultValue: 'foundation', description: "Namespace for the Docker Image")
-        string(name: 'SERVICE', defaultValue: 'express-gateway',     description: 'Namespace for the Docker Image')
+        string(name: 'SERVICE', defaultValue: 'fidor_app_manager',     description: 'Namespace for the Docker Image')
+        choice(
+                name: 'REGISTRY',
+                choices: ['dockerhub.fidorfzco.com:5000','030862835226.dkr.ecr.eu-west-1.amazonaws.com'],
+                description: 'Specify the Docker Registry you want to push the image to'
+            )
+        booleanParam(name: 'Mergedbool', defaultValue: 'false', description: "Check to build manually")
     }
     stages {
        /*  Checkout the desired git branch */
@@ -59,7 +63,7 @@ pipeline {
         always {
             // clean up our workspace
             echo 'I will always say Hello again!'
-            slackSend channel: '#jenkins-foundation',
+            slackSend channel: '#jenkins-fidor_digital_platform',
                 color: COLOR_MAP[currentBuild.currentResult],
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
 
