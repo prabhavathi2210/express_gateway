@@ -6,7 +6,7 @@ pipeline {
         string(name: 'FORK',      defaultValue: 'Fidor-FZCO', description: "Fork  of the git repository")
         string(name: 'BRANCH',   defaultValue: 'develop', description: "Branch to build")
         string(name: 'NAMESPACE',   defaultValue: 'foundation', description: "Namespace for the Docker Image")
-        string(name: 'SERVICE', defaultValue: 'fidor_app_manager',     description: 'Namespace for the Docker Image')
+        string(name: 'SERVICE', defaultValue: 'express-gateway',     description: 'Namespace for the Docker Image')
         choice(
                 name: 'REGISTRY',
                 choices: ['dockerhub.fidorfzco.com:5000','030862835226.dkr.ecr.eu-west-1.amazonaws.com'],
