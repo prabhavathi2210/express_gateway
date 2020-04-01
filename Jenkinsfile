@@ -74,11 +74,11 @@ pipeline {
     }
     post {
         always {
+            // Send notifications
+            slackSend channel: '#jenkins-fidor_digital_platform',
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
             // clean up our workspace
-            echo 'I will always say Hello again!'
-            slackSend channel: '#jenkins-foundation',
-                color: COLOR_MAP[currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
             sh 'NAMESPACE=$NAMESPACE BRANCH=$BRANCH make clean'
             deleteDir()
         }
