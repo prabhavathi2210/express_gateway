@@ -1,9 +1,7 @@
+def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'warning', 'ABORTED': '#C3BABF']
+
 pipeline {
     agent { label 'master' }
-    triggers {
-        githubPush()
-        pollSCM('* * * * *')
-    }
     parameters {
         string(name: 'SERVICE',   defaultValue: 'express_gateway',   description: "Specify the GIT repo you want to build the image from")
         string(name: 'FORK',      defaultValue: 'Fidor-FZCO',   description: "Specify the fork of the GIT repository you would like to build from")
@@ -14,10 +12,15 @@ pipeline {
             choices: ['030862835226.dkr.ecr.eu-west-1.amazonaws.com', 'dockerhub.fidorfzco.com:5000'],
             description: 'Specify the Docker Registry you want to push the image to'
         )
+        booleanParam(name: 'Mergedbool', defaultValue: 'true', description: 'Check to build manually' )
     }
+    
     stages {
        /*  Checkout the desired git branch */
         stage('Checkout SCM') {
+        when {
+            environment name: 'Mergedbool', value: 'true'
+        }
         steps {
             checkout scm: [$class: 'GitSCM', branches: [[name: '${BRANCH}']], userRemoteConfigs: [[credentialsId: '68795a3a-52da-4d31-a0b5-84639e760a63', url: 'git@github.com:${FORK}/${SERVICE}.git']]]
         }
@@ -33,6 +36,9 @@ pipeline {
 
         /* Build Docker container image */
         stage('Build the container image') {
+            when {
+                environment name: 'Mergedbool', value: 'true'
+            }
             steps {
                 sh '''#!/bin/bash -le
                 NAMESPACE=$NAMESPACE BRANCH=$BRANCH make build
@@ -54,6 +60,9 @@ pipeline {
 
         /* Push the build container image to the Docker registry */
         stage('Push the container image to the Docker registry') {
+            when {
+                environment name: 'Mergedbool', value: 'true'
+            }
             steps {
                 script {
                     sh 'NAMESPACE=$NAMESPACE BRANCH=$BRANCH make push'
@@ -66,6 +75,10 @@ pipeline {
     post {
         always {
             // clean up our workspace
+            echo 'I will always say Hello again!'
+            slackSend channel: '#jenkins-foundation',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
             sh 'NAMESPACE=$NAMESPACE BRANCH=$BRANCH make clean'
             deleteDir()
         }
