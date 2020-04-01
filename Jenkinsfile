@@ -18,13 +18,14 @@ pipeline {
     stages {
        /*  Checkout the desired git branch */
         stage('Checkout SCM') {
-        when {
-            environment name: 'Mergedbool', value: 'true'
+            when {
+                environment name: 'Mergedbool', value: 'true'
+            }
+            steps {
+                checkout scm: [$class: 'GitSCM', branches: [[name: '${BRANCH}']], userRemoteConfigs: [[credentialsId: '68795a3a-52da-4d31-a0b5-84639e760a63', url: 'git@github.com:${FORK}/${SERVICE}.git']]]
+            }
         }
-        steps {
-            checkout scm: [$class: 'GitSCM', branches: [[name: '${BRANCH}']], userRemoteConfigs: [[credentialsId: '68795a3a-52da-4d31-a0b5-84639e760a63', url: 'git@github.com:${FORK}/${SERVICE}.git']]]
-        }
-    }
+        
         // /* Package the gems */
         // stage('Package the gems') {
         //     steps {
@@ -33,18 +34,6 @@ pipeline {
         //         '''
         //     }
         // }
-
-        /* Build Docker container image */
-        stage('Build the container image') {
-            when {
-                environment name: 'Mergedbool', value: 'true'
-            }
-            steps {
-                sh '''#!/bin/bash -le
-                NAMESPACE=$NAMESPACE BRANCH=$BRANCH make build
-                '''
-            }
-        }
 
         /* Authenticates with Amazon ECR Repository and retrieves access token */
         stage("ECR Login") {
@@ -61,6 +50,18 @@ pipeline {
             }
         }
 
+        /* Build Docker container image */
+        stage('Build the container image') {
+            when {
+                environment name: 'Mergedbool', value: 'true'
+            }
+            steps {
+                sh '''#!/bin/bash -le
+                REGISTRY=$REGISTRY NAMESPACE=$NAMESPACE BRANCH=$BRANCH make build
+                '''
+            }
+        }
+
         /* Push the build container image to the Docker registry */
         stage('Push the container image to the Docker registry') {
             when {
@@ -68,7 +69,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'NAMESPACE=$NAMESPACE BRANCH=$BRANCH make push'
+                    sh 'REGISTRY=$REGISTRY NAMESPACE=$NAMESPACE BRANCH=$BRANCH make push'
                     sh 'make get_commit_hash > .git/commit-id'
                     env.GIT_COMMIT = readFile('.git/commit-id').trim()
                 }
