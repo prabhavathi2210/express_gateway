@@ -48,6 +48,9 @@ pipeline {
 
         /* Authenticates with Amazon ECR Repository and retrieves access token */
         stage("ECR Login") {
+            when {
+                environment name: 'Mergedbool', value: 'true'
+            }
             steps {
                 withAWS(credentials:'ecr') {
                     script {
