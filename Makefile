@@ -1,14 +1,14 @@
 # Project namespace: fidor by default
-NAMESPACE ?= loanservice
+NAMESPACE ?= foundation
 # Image name
 NAME := express_gateway
 # Docker registry
-REGISTRY ?= dockerhub.fidorfzco.com:5000
+REGISTRY := ${REGISTRY}
 # Docker image reference
 IMG := ${REGISTRY}/${NAMESPACE}/${NAME}
 # Fetch the git branch name if it is not provided
 BRANCH ?= $$(git symbolic-ref --short HEAD)
-# Create  an image tag based on the branch name
+# Create an image tag based on the branch name
 BRANCH_TAG := $$(echo ${BRANCH} | tr / _)
 # Fetch the latest commit hash
 COMMIT_HASH := $$(git rev-parse HEAD)
