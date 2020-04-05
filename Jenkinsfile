@@ -26,14 +26,14 @@ pipeline {
             }
         }
         
-        // /* Package the gems */
-        // stage('Package the gems') {
-        //     steps {
-        //         sh '''#!/bin/bash -le
-        //         BRANCH=$BRANCH make config
-        //         '''
-        //     }
-        // }
+        /* Package the gems 
+        stage('Package the gems') {
+            steps {
+                sh '''#!/bin/bash -le
+                BRANCH=$BRANCH make config
+                '''
+            }
+        } */
 
         /* Authenticates with Amazon ECR Repository and retrieves access token */
         stage("ECR Login") {
