@@ -73,7 +73,6 @@ build: test_config
 # Push Docker image
 push:
 	@echo "Pushing Docker image ..."; \
-	docker push ${IMG}:${COMMIT_HASH}; \
 	docker push ${IMG}:${BRANCH_TAG}; \
 	echo "Pushed tag : ${BRANCH_TAG}"; \
 	if [[ "${BRANCH}" == "master" ]]; then\
