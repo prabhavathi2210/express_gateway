@@ -35,21 +35,6 @@ pipeline {
             }
         } */
 
-        /* Authenticates with Amazon ECR Repository and retrieves access token 
-        stage("ECR Login") {
-            when {
-                environment name: 'Mergedbool', value: 'true'
-            }
-            steps {
-                withAWS(credentials:'ecr') {
-                    script {
-                        def login = ecrLogin()
-                        sh "${login}"
-                    }
-                }
-            }
-        } */
-
         /* Build Docker container image */
         stage('Build the container image') {
             when {
