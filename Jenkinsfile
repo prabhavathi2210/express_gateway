@@ -3,14 +3,14 @@ def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'warning', 
 pipeline {
     agent { label 'master' }
     parameters {
-        string(name: 'SERVICE',   defaultValue: 'express_gateway',   description: "Specify the GIT repo you want to build the image from")
-        string(name: 'FORK',      defaultValue: 'Fidor-FZCO',   description: "Specify the fork of the GIT repository you would like to build from")
+        string(name: 'SERVICE',   defaultValue: 'express_gateway',   description: "Specify the GIT repo to build the image from")
+        string(name: 'FORK',      defaultValue: 'Fidor-FZCO',   description: "Specify the fork of the GIT repository to build the image from")
         string(name: 'BRANCH',    defaultValue: 'develop', description: "Specify the branch of the GIT repo to build the image from")
-        string(name: 'NAMESPACE', defaultValue: 'foundation',   description: "Specify the namespace you want to push the image to")
+        string(name: 'NAMESPACE', defaultValue: 'foundation',   description: "Specify the namespace to push the image to")
         choice(
             name: 'REGISTRY',
             choices: ['030862835226.dkr.ecr.eu-west-1.amazonaws.com', 'dockerhub.fidorfzco.com:5000'],
-            description: 'Specify the Docker Registry you want to push the image to'
+            description: 'Specify the Docker Registry to push the image to'
         )
         booleanParam(name: 'Mergedbool', defaultValue: 'true', description: 'Check to build manually' )
     }
@@ -34,21 +34,6 @@ pipeline {
                 '''
             }
         } */
-
-        /* Authenticates with Amazon ECR Repository and retrieves access token */
-        stage("ECR Login") {
-            when {
-                environment name: 'Mergedbool', value: 'true'
-            }
-            steps {
-                withAWS(credentials:'ecr') {
-                    script {
-                        def login = ecrLogin()
-                        sh "${login}"
-                    }
-                }
-            }
-        }
 
         /* Build Docker container image */
         stage('Build the container image') {
