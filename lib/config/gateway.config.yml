@@ -1,26 +1,66 @@
 http:
-  port: ${EG_HTTP_PORT:-8080}
-# https:
-#   port: 9999
-#   tls: {}
-admin: # remove this section to disable admin API
+  port: '${EG_HTTP_PORT:-8080}'
+admin:
   port: 9876
-  host: localhost # use 0.0.0.0 to listen on all IPv4 interfaces
+  host: localhost
 apiEndpoints:
-  api:
+  fidor-admin-api:
+    - host: '*'
+      paths:
+        - /schemas*
+        - /policies*
+        - /service-endpoints/fidor*
+        - /api-endpoints/fidor*
+        - /pipelines/fidor*
+        - /service-endpoints
+        - /api-endpoints
+        - /pipelines
+      scopes:
+        - ee16c97c737cdb820aee2467d88d7413de110b18
+    - host: '*'
+      paths:
+        - /scopes*
+        - /credentials*
+        - /apps*
+        - /users*
+      methods:
+        - GET
+        - DELETE
+      scopes:
+        - ee16c97c737cdb820aee2467d88d7413de110b18
+  fidor-public-admin-api:
     host: '*'
+    paths:
+      - /users*
+      - /apps*
+      - /credentials*
+      - /scopes*
+      - /pipelines*
+      - /service-endpoints*
+      - /api-endpoints*
 serviceEndpoints:
-  backend:
-    url: 'http://localhost:9876' # btw this is EG admin API
+  fidor-admin-backend:
+    url: 'http://localhost:9876'
 policies:
   - proxy
   - key-auth
+  - expression
+  - request-transformer
 pipelines:
-  adminAPI:
+  fidor-admin-api-pipeline:
     apiEndpoints:
-      - api
+      - fidor-admin-api
     policies:
-      # - key-auth: # uncomment to enable key-auth
+      - key-auth: 
+          - action:                                      
+              apiKeyHeaderScheme: Bearer
       - proxy:
           action:
-            serviceEndpoint: backend
+            serviceEndpoint: fidor-admin-backend
+  fidor-public-admin-api-pipeline:
+    apiEndpoints:
+      - fidor-public-admin-api
+    policies:
+      - proxy:
+          action:
+            serviceEndpoint: fidor-admin-backend
