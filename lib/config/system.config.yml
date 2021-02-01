@@ -11,6 +11,10 @@ cli:
   # express-gateway-plugin-example:
   #   param1: 'param from system.config'
 
+plugins:
+  healthCheck:
+    package: '/usr/src/app/lib/app/healthCheck.js'
+
 crypto:
   cipherKey: sensitiveKey
   algorithm: aes256
