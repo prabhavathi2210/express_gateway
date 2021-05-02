@@ -1,7 +1,7 @@
 # Project namespace: fidor by default
 NAMESPACE ?= foundation
 # Image name
-NAME := express_gateway
+NAME := apig
 # Docker registry
 REGISTRY := ${REGISTRY}
 # Docker image reference
